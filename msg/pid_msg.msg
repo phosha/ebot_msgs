@@ -1,4 +1,4 @@
-int32[3] mot
-float32[3] P
-float32[3] I
-float32[3] D
+int8[3] mot
+int16[3] P
+int16[3] I
+int16[3] D
