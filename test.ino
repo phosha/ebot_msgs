@@ -2,6 +2,11 @@
 #include <std_msgs/Bool.h>
 #include <std_msgs/Int8.h>
 #include <ebot_msg/catcher.h>>
+#include <Wire.h>
+#include <FaBoPWM_PCA9685.h>
+
+
+FaBoPWM servo;
 
 ros::NodeHandle nh;
 
@@ -26,16 +31,23 @@ ros::ServiceServer<catcher::Request, catcher::Response> server("catch_serv", &ca
 
 void servoUp()
 {
+    nh.logerror("UP");
+    servo.set_channel_value(0,0);
 }
 
 void servoDown() 
 {
+    nh.logerror("DOWN");
+    servo.set_channel_value(0,0);
 }
 
 void setup()
 {
     nh.initNode();
     nh.advertiseService(server);
+
+    servo.begin();
+    servo.set_hz(1526);
 }
 
 void loop()

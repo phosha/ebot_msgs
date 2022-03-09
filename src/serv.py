@@ -8,8 +8,10 @@ def sender(req):
     i = req.Catching.data
     rospy.loginfo(f"{req.Catching.data=}")
     if i == True:
+        rospy.logerr(i)
         return catcherResponse(Num = 123)
     if i == False:
+        rospy.logerr(i)
         return catcherResponse(Num = 0)
 
 def server():
