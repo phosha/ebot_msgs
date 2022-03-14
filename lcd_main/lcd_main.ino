@@ -1,0 +1,239 @@
+//#include <ros.h>
+#include <LiquidCrystal_I2C.h>
+
+LiquidCrystal_I2C lcd(0x27, 16, 2);
+
+//ros::NodeHandle_<ArduinoHardware, 5, 5, 127, 127> nh; //1532 for publish and 1024 receive
+
+
+///////////////////////////////убейте меня////////////////// 
+byte LT[8] = {0x07, 0x0F, 0x1F, 0x1F, 0x1F, 0x1F, 0x1F, 0x1F};
+byte UB[8] = {0x1F, 0x1F, 0x1F, 0x00, 0x00, 0x00, 0x00, 0x00};
+byte RT[8] = {0x3C, 0x1E, 0x1F, 0x1F, 0x1F, 0x1F, 0x1F, 0x1F};
+byte LL[8] = {0x1F, 0x1F, 0x1F, 0x1F, 0x1F, 0x1F, 0x0F, 0x07};
+byte LB[8] = {0x00, 0x00, 0x00, 0x00, 0x00, 0x1F, 0x1F, 0x1F};
+byte LR[8] = {0x1F, 0x1F, 0x1F, 0x1F, 0x1F, 0x1F, 0x1E, 0x1C};
+byte MB[8] = {0x1F, 0x1F, 0x1F, 0x00, 0x00, 0x00, 0x1F, 0x1F};
+byte block[8] = {0x1F, 0x1F, 0x1F, 0x1F, 0x1F, 0x1F, 0x1F, 0x1F};
+////////////////////////////////////////////////////
+
+
+
+void setup() {
+  Serial.begin(9600);
+  lcd.init();                      
+  lcd.backlight();
+  lcd.home();
+  lcd.clear();
+  lcd.createChar(0, LT);
+  lcd.createChar(1, UB);
+  lcd.createChar(2, RT);
+  lcd.createChar(3, LL);
+  lcd.createChar(4, LB);
+  lcd.createChar(5, LR);
+  lcd.createChar(6, MB);
+  lcd.createChar(7, block);
+
+
+
+}
+
+
+////////////////йобанная магия с StacOverflow
+void reverseArray(uint16_t a[], uint8_t n)
+{
+  int temp;
+  for (int i = 0; i < n / 2; i++)
+  {
+    temp = a[n - i - 1];
+    a[n - i - 1] = a[i];
+    a[i] = temp;
+  }
+}
+/////////////////////////////////////////////////
+
+void loop() {
+  uint16_t numb = 8080;
+  uint16_t numba = numb;
+  uint8_t count = 0;
+///////////////////подсчет кол-ва цифр в числе
+  scanf("%d", &numba);
+  while (numba) {
+    numba /= 10;
+    count++;
+  }
+//////////////////////////////////////////////
+
+  uint8_t n = count;
+  uint16_t score[n];
+
+//////////////перевод числа в массив цифр
+  for (uint8_t i = 0; i < n; i++) {
+    score[i] = numb % 10;
+    numb = numb / 10;
+  }
+/////////////////////////////////////////
+  
+  
+  reverseArray(score, n); // переворот массива
+
+////////////////////вывод на дисплей
+  for (uint8_t i; i < n; i++) {
+    printDigits(score[i], i * 4);
+  }
+/////////////////////////////////////////////
+  
+
+  delay(1000);
+
+}
+
+
+
+void custom0(int x)
+{ 
+  lcd.setCursor(x, 0); 
+  lcd.write(0);  
+  lcd.write(1);  
+  lcd.write(2);
+  lcd.setCursor(x, 1);
+  lcd.write(3);  
+  lcd.write(4);  
+  lcd.write(5);
+}
+void custom1(int x)
+{
+  lcd.setCursor(x, 0);
+  lcd.write(1);
+  lcd.write(2);
+  lcd.print(" ");
+  lcd.setCursor(x, 1);
+  lcd.write(4);
+  lcd.write(7);
+  lcd.write(4);
+}
+void custom2(int x)
+{
+  lcd.setCursor(x, 0);
+  lcd.write(6);
+  lcd.write(6);
+  lcd.write(2);
+  lcd.setCursor(x, 1);
+  lcd.write(3);
+  lcd.write(4);
+  lcd.write(4);
+}
+void custom3(int x)
+{
+  lcd.setCursor(x, 0);
+  lcd.write(6);
+  lcd.write(6);
+  lcd.write(2);
+  lcd.setCursor(x, 1);
+  lcd.write(4);
+  lcd.write(4);
+  lcd.write(5);
+}
+void custom4(int x)
+{
+  lcd.setCursor(x, 0);
+  lcd.write(3);
+  lcd.write(4);
+  lcd.write(7);
+  lcd.setCursor(x, 1);
+  lcd.print(" ");
+  lcd.print(" ");
+  lcd.write(7);
+}
+void custom5(int x)
+{
+  lcd.setCursor(x, 0);
+  lcd.write(3);
+  lcd.write(6);
+  lcd.write(6);
+  lcd.setCursor(x, 1);
+  lcd.write(4);
+  lcd.write(4);
+  lcd.write(5);
+}
+void custom6(int x)
+{
+  lcd.setCursor(x, 0);
+  lcd.write(0);
+  lcd.write(6);
+  lcd.write(6);
+  lcd.setCursor(x, 1);
+  lcd.write(3);
+  lcd.write(4);
+  lcd.write(5);
+}
+void custom7(int x)
+{
+  lcd.setCursor(x, 0);
+  lcd.write(1);
+  lcd.write(1);
+  lcd.write(2);
+  lcd.setCursor(x, 1);
+  lcd.print(" ");
+  lcd.print(" ");
+  lcd.write(7);
+}
+void custom8(int x)
+{
+  lcd.setCursor(x, 0);
+  lcd.write(0);
+  lcd.write(6);
+  lcd.write(2);
+  lcd.setCursor(x, 1);
+  lcd.write(3);
+  lcd.write(4);
+  lcd.write(5);
+}
+void custom9(int x)
+{
+  lcd.setCursor(x, 0);
+  lcd.write(0);
+  lcd.write(6);
+  lcd.write(2);
+  lcd.setCursor(x, 1);
+  lcd.print(" ");
+  lcd.print(" ");
+  lcd.write(7);
+}
+
+
+
+void printDigits(int digits, int x) {
+  switch (digits) {
+    case 0:
+      custom0(x);
+      break;
+    case 1:
+      custom1(x);
+      break;
+    case 2:
+      custom2(x);
+      break;
+    case 3:
+      custom3(x);
+      break;
+    case 4:
+      custom4(x);
+      break;
+    case 5:
+      custom5(x);
+      break;
+    case 6:
+      custom6(x);
+      break;
+    case 7:
+      custom7(x);
+      break;
+    case 8:
+      custom8(x);
+      break;
+    case 9:
+      custom9(x);
+      break;
+  }
+}
